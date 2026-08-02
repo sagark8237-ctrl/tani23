@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Friendship Day Tanu ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@600&display=swap');
+
+        :root {
+            --bg-color: #fdfafb;
+            --text-dark: #2d3436;
+            --text-light: #ffffff;
+            --accent: #ff8fa3;
+            --accent-hover: #ff748c;
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(255, 143, 163, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; }
+        .handwriting { font-family: 'Dancing Script', cursive; color: var(--accent); }
+        p { line-height: 1.8; font-size: 1.1rem; }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            color: var(--text-light);
+            border-radius: 24px;
+        }
+
+        /* Login Screen */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: var(--bg-color);
+            z-index: 99999;
+            transition: opacity 1s ease, visibility 1s;
+        }
+        .login-box { text-align: center; max-width: 400px; width: 90%; }
+        .login-box h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .login-box h2 { font-size: 1.8rem; margin-bottom: 2rem; font-weight: 400; }
+        .login-box input {
+            width: 100%; padding: 15px; margin: 10px 0 20px;
+            border-radius: 15px; border: 2px solid rgba(255, 143, 163, 0.3);
+            background: rgba(255,255,255,0.8);
+            font-size: 1.2rem; text-align: center;
+            outline: none; transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 2px;
+        }
+        .login-box input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(255, 143, 163, 0.2); }
+        .btn {
+            background: var(--accent); color: white;
+            border: none; padding: 16px 36px; border-radius: 30px;
+            font-size: 1.1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 143, 163, 0.3);
+        }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255, 143, 163, 0.4); }
+        #login-error { color: #ff4d4d; font-size: 1rem; margin-top: 15px; opacity: 0; transition: opacity 0.3s; font-weight: 600; }
+        
+        /* Loader */
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid var(--glass-border);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Main Content */
+        #main-content { display: none; opacity: 0; transition: opacity 1.5s ease; position: relative; }
+
+        /* Sections */
+        section {
+            min-height: 100vh; padding: 5rem 2rem;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; position: relative;
+        }
+
+        /* Media Containers */
+        .media-container {
+            width: 100%; max-width: 800px; margin: 0 auto 2rem;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .media-container img, .media-container video {
+            width: 100%; height: auto; max-height: 70vh;
+            object-fit: contain; /* NEVER CROP */
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            background: transparent;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(60px); transition: all 1.2s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+
+        /* Memory Grid (Section 4) */
+        .memory-grid { display: flex; flex-direction: column; gap: 5rem; width: 100%; max-width: 900px; margin-top: 3rem; }
+        .memory-card { overflow: hidden; }
+        .memory-card p {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem;
+            font-style: italic; color: var(--text-secondary); margin-top: 1rem;
+        }
+
+        /* Slideshow (Section 5) */
+        #slideshow-container {
+            width: 100%; max-width: 800px; height: 75vh;
+            position: relative; margin: 2rem auto;
+            border-radius: 24px; overflow: hidden;
+        }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 1.5s ease-in-out, transform 8s linear;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .slide.active { opacity: 1; transform: scale(1.03); z-index: 1; }
+        .slide img, .slide video {
+            width: 100%; height: 100%; object-fit: contain; border-radius: 24px;
+        }
+
+        /* Background Wrappers */
+        .bg-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .bg-wrapper img { width: 100%; height: 100%; object-fit: cover; filter: blur(10px); transform: scale(1.1); }
+        .dark-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 0; }
+
+        /* Typewriter (Section 7) */
+        .typewriter-text {
+            font-family: 'Inter', sans-serif; text-align: left;
+            line-height: 1.9; font-size: 1.15rem;
+            white-space: pre-wrap; margin: 0;
+        }
+        .cursor { display: inline-block; width: 3px; height: 1.15rem; background: var(--text-light); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px;}
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Floating Particles */
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .particle { position: absolute; opacity: 0; animation: floatUp linear infinite; }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Confetti Canvas */
+        canvas#confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            section { padding: 4rem 1.5rem; }
+            .media-container img, .media-container video { max-height: 55vh; }
+            #slideshow-container { height: 60vh; }
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            .glass-card { padding: 1.5rem; }
+            .typewriter-text { font-size: 1rem; line-height: 1.7; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="glass-card login-box">
+            <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_9731.JPG.jpeg?updatedAt=1785674138875" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255, 143, 163, 0.5); margin-bottom: 1rem; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+            <h1>Hey Tanu ❤️</h1>
+            <h2 class="handwriting">Happy Friendship Day</h2>
+            <input type="password" id="password" placeholder="Enter Password" autocomplete="off">
+            <button class="btn" id="login-btn" onclick="login()">Unlock Surprise ✨</button>
+            <div class="spinner" id="loader"></div>
+            <p id="login-error">Oops! Wrong Password 🥺</p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+        <div id="particles-container" class="particles"></div>
+
+        <!-- SECTION 1: WELCOME -->
+        <section id="section-1">
+            <div class="reveal">
+                <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent);">Hey Tanu ❤️</h1>
+                <h2 class="handwriting" style="font-size: 2.5rem; margin-bottom: 2rem;">Happy Friendship Day</h2>
+            </div>
+            <div class="media-container reveal delay-1">
+                <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_1392.JPG.jpeg" alt="Welcome Image">
+            </div>
+            <p class="reveal delay-2" style="max-width: 600px; font-size: 1.25rem; font-style: italic; color: #555; margin-bottom: 2.5rem;">
+                Today isn't just another day.<br>
+                Today is about celebrating one of the most important people in my life.
+            </p>
+            <button class="btn reveal delay-3" onclick="scrollToNext('section-2')">Begin Journey ↓</button>
+        </section>
+
+        <!-- SECTION 2: WHERE IT ALL STARTED -->
+        <section id="section-2">
+            <h2 class="reveal" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 0.5rem;">Where It All Started</h2>
+            <p class="reveal delay-1" style="font-weight: 600; font-size: 1.1rem; color: #888; margin-bottom: 2rem; letter-spacing: 2px;">22 AUGUST 2025</p>
+            <div class="media-container reveal delay-2">
+                <img id="parallax-img" src="https://ik.imagekit.io/6ay9nvkdo/IMG_9728.JPG.jpeg" alt="Where it started">
+            </div>
+            <div class="glass-card reveal delay-3" style="max-width: 700px; margin-top: 1rem;">
+                <p style="font-size: 1.25rem;">
+                    While returning from Janhvi's wedding, we had one simple conversation.<br><br>
+                    Neither of us knew that one conversation would become such a beautiful friendship.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FIRST MEMORY -->
+        <section id="section-3">
+            <div class="glass-card reveal" style="width: 100%; max-width: 900px;">
+                <h2 style="font-size: 2.2rem; color: var(--accent); margin-bottom: 2rem;">Our First Memory</h2>
+                <div class="media-container">
+                    <video muted playsinline disablePictureInPicture>
+                        <source src="https://ik.imagekit.io/6ay9nvkdo/IMG_6565.MP4">
+                    </video>
+                </div>
+                <p style="font-size: 1.3rem; font-style: italic; color: #666; margin-top: 2rem;">
+                    No poses.<br>No planning.<br>Just one genuine moment that became our first memory.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 4: OUR MEMORIES -->
+        <section id="section-4">
+            <h1 class="reveal" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">Our Memories</h1>
+            <p class="reveal delay-1 handwriting" style="font-size: 2rem; margin-bottom: 3rem;">moments that matter</p>
+            
+            <div class="memory-grid">
+                <!-- Memory 1 -->
+                <div class="memory-card glass-card reveal">
+                    <div class="media-container">
+                        <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_1158.JPG.jpeg" alt="Memory 1">
+                    </div>
+                    <p>Some memories never need a reason to make me smile. 🤍</p>
+                </div>
+                
+                <!-- Memory 2 -->
+                <div class="memory-card glass-card reveal">
+                    <div class="media-container">
+                        <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_1451.JPG.jpeg" alt="Memory 2">
+                    </div>
+                    <p>Probably laughing at something we'll never be able to explain. 😂</p>
+                </div>
+
+                <!-- Memory 3 -->
+                <div class="memory-card glass-card reveal">
+                    <div class="media-container">
+                        <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_1105.JPG.jpeg?updatedAt=1785674138976" alt="Memory 3">
+                    </div>
+                    <p>The best memories are always the unplanned ones. ✨</p>
+                </div>
+
+                <!-- Memory 4 -->
+                <div class="memory-card glass-card reveal">
+                    <div class="media-container">
+                        <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_9398.JPG.jpeg?updatedAt=1785674139261" alt="Memory 4">
+                    </div>
+                    <p>Good food, random conversations and even better company. ☕🤍</p>
+                </div>
+
+                <!-- Memory 5 -->
+                <div class="memory-card glass-card reveal">
+                    <div class="media-container">
+                        <video muted playsinline disablePictureInPicture>
+                            <source src="https://ik.imagekit.io/6ay9nvkdo/IMG_1459.MOV?updatedAt=1785674412309">
+                        </video>
+                    </div>
+                    <p>Proof that we're completely normal... definitely not. 😂❤️</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: JUST YOU -->
+        <section id="section-5">
+            <h1 class="reveal" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">Just You 🤍</h1>
+            <p class="reveal delay-1" style="max-width: 700px; font-size: 1.15rem; color: #555; margin-bottom: 2rem;">
+                I know this website is about our memories... but let's be honest, you deserved your own section. You're just too cute not to have one. 🤍
+            </p>
+            
+            <div id="slideshow-container" class="glass-card reveal delay-2" style="padding: 15px;">
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_1453.MOV"></video></div>
+                <div class="slide"><img src="https://ik.imagekit.io/6ay9nvkdo/IMG_7045.JPG.jpeg"></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_9762.MP4"></video></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_9031.MOV"></video></div>
+                <div class="slide"><img src="https://ik.imagekit.io/6ay9nvkdo/IMG_8933.JPG.jpeg"></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_1368.MOV"></video></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_1441.MOV"></video></div>
+                <div class="slide"><img src="https://ik.imagekit.io/6ay9nvkdo/IMG_9731.JPG.jpeg"></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_1434.MOV"></video></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_9547.MP4"></video></div>
+                <div class="slide"><img src="https://ik.imagekit.io/6ay9nvkdo/IMG_1437.JPG.jpeg"></div>
+                <div class="slide"><video muted playsinline disablePictureInPicture><source src="https://ik.imagekit.io/6ay9nvkdo/IMG_9681.MOV"></video></div>
+            </div>
+
+            <p id="s5-end-text" class="handwriting" style="opacity: 0; transform: translateY(20px); transition: all 1.5s ease; margin-top: 2rem; font-size: 2.2rem;">
+                Okay... enough admiring you.<br>Let's continue our story. ❤️
+            </p>
+        </section>
+
+        <!-- SECTION 6: PERSONAL DESIGNER -->
+        <section id="section-6">
+            <div class="glass-card reveal" style="text-align: center; max-width: 600px; padding: 4rem 2rem;">
+                <div style="font-size: 5rem; margin-bottom: 1.5rem; animation: spin 8s linear infinite; display: inline-block;">👗</div>
+                <h2 style="color: var(--accent); font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing: 2px; text-transform: uppercase;">Official Title</h2>
+                <h1 style="font-size: 3rem; margin-bottom: 2rem; font-family: 'Playfair Display', serif;">My Personal Designer</h1>
+                <p style="font-size: 1.3rem; color: #666; font-style: italic;">
+                    Still waiting for free fashion advice forever. 😌
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 7: LETTER -->
+        <section id="section-7" style="padding: 0;">
+            <div class="bg-wrapper">
+                <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_1153.JPG.jpeg?updatedAt=1785674139302" alt="Background">
+            </div>
+            <div class="dark-overlay"></div>
+            
+            <div class="glass-dark reveal" style="position: relative; z-index: 2; max-width: 800px; width: 90%; margin: 5rem 0; padding: 3.5rem;">
+                <div style="text-align: left;">
+                    <span id="letter-content" class="typewriter-text"></span><span class="cursor"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: FINAL SECTION -->
+        <section id="section-8" style="padding: 0;">
+            <div class="bg-wrapper">
+                <img src="https://ik.imagekit.io/6ay9nvkdo/IMG_9398.JPG.jpeg?updatedAt=1785674139261" alt="Final Background">
+            </div>
+            <div class="dark-overlay" style="background: rgba(0,0,0,0.5);"></div>
+            <canvas id="confetti"></canvas>
+            
+            <div class="glass-dark reveal delay-1" style="position: relative; z-index: 2; text-align: center; padding: 4rem; max-width: 700px; width: 90%;">
+                <h1 style="color: #ffb8b8; font-size: 3.5rem; margin-bottom: 1rem;">Happy Friendship Day<br>Tanu ❤️</h1>
+                <p style="font-size: 1.2rem; font-weight: 300; letter-spacing: 3px; color: #ddd; margin-bottom: 2rem;">22 AUGUST 2025 &rarr; 2 AUGUST 2026</p>
+                <p style="font-size: 1.6rem; margin: 3rem 0; font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.6;">
+                    From one unexpected conversation...<br>to one unforgettable friendship.
+                </p>
+                <button class="btn" style="margin-top: 1rem;" onclick="startAgain()">Start Again ↺</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- LOGIN LOGIC ---
+        function login() {
+            const pass = document.getElementById('password').value;
+            const error = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+            const loader = document.getElementById('loader');
+            
+            if(pass === '2307') {
+                // User Gesture Unlock for Safari video autoplay
+                document.querySelectorAll('video').forEach(v => {
+                    v.play().then(() => v.pause()).catch(e => console.log('Unlock pending'));
+                });
+
+                btn.style.display = 'none';
+                loader.style.display = 'block';
+                error.style.opacity = '0';
+                
+                setTimeout(() => {
+                    document.getElementById('login-screen').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('login-screen').style.display = 'none';
+                        const main = document.getElementById('main-content');
+                        main.style.display = 'block';
+                        // Trigger reflow
+                        void main.offsetWidth; 
+                        main.style.opacity = '1';
+                        
+                        initWebsite();
+                    }, 1000);
+                }, 1200);
+            } else {
+                error.style.opacity = '1';
+                setTimeout(()=> error.style.opacity = '0', 2500);
+            }
+        }
+
+        function scrollToNext(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startAgain() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- INIT ALL LOGIC AFTER LOGIN ---
+        function initWebsite() {
+            createParticles();
+            initObservers();
+        }
+
+        // --- PARTICLES GENERATOR ---
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const elements = ['❤️', '✨', '🤍', '💖', '🌸'];
+            
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.classList.add('particle');
+                el.innerText = elements[Math.floor(Math.random() * elements.length)];
+                
+                el.style.left = Math.random() * 100 + 'vw';
+                const duration = Math.random() * 4 + 6; // 6-10s
+                el.style.animationDuration = duration + 's';
+                el.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+                
+                container.appendChild(el);
+                setTimeout(() => { el.remove(); }, duration * 1000);
+            }, 600);
+        }
+
+        // --- OBSERVERS (Scroll Reveal & Video Autoplay) ---
+        function initObservers() {
+            // Scroll Reveal Observer
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+            // Video Play Observer (excluding slideshow)
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if(!entry.target.closest('#slideshow-container')) {
+                            entry.target.play().catch(e => console.log('Autoplay prevented'));
+                            videoObserver.unobserve(entry.target);
+                        }
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('video').forEach(video => {
+                if(!video.closest('#slideshow-container')) {
+                    videoObserver.observe(video);
+                }
+            });
+
+            // Slideshow Observer (Section 5)
+            const s5Observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && !slideshowStarted) {
+                    slideshowStarted = true;
+                    startSlideshow();
+                }
+            }, { threshold: 0.4 });
+            s5Observer.observe(document.getElementById('section-5'));
+
+            // Letter Observer (Section 7)
+            const s7Observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && !typewriterStarted) {
+                    typewriterStarted = true;
+                    typeWriter();
+                }
+            }, { threshold: 0.4 });
+            s7Observer.observe(document.getElementById('section-7'));
+
+            // Final Section Observer (Confetti)
+            const s8Observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && !confettiStarted) {
+                    confettiStarted = true;
+                    createConfetti();
+                }
+            }, { threshold: 0.2 });
+            s8Observer.observe(document.getElementById('section-8'));
+        }
+
+        // --- PARALLAX EFFECT ---
+        window.addEventListener('scroll', () => {
+            const parallaxImg = document.getElementById('parallax-img');
+            if(parallaxImg) {
+                const scrollPos = window.scrollY;
+                parallaxImg.style.transform = `translateY(${scrollPos * 0.08}px) scale(1.05)`;
+            }
+        });
+
+        // --- SLIDESHOW LOGIC ---
+        let slideshowStarted = false;
+        let currentSlideIndex = 0;
+        let cycledOnce = false;
+
+        function startSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            if(slides.length === 0) return;
+            
+            slides[0].classList.add('active');
+            playSlide(slides[0]);
+
+            function playSlide(slide) {
+                const video = slide.querySelector('video');
+                if(video) {
+                    video.currentTime = 0;
+                    video.play().then(() => {
+                        video.onended = nextSlide;
+                    }).catch(e => {
+                        console.log('Slideshow video autoplay prevented', e);
+                        setTimeout(nextSlide, 4000); // fallback
+                    });
+                } else {
+                    setTimeout(nextSlide, 4000);
+                }
+            }
+
+            function nextSlide() {
+                slides.forEach(s => s.classList.remove('active'));
+                const currVideo = slides[currentSlideIndex].querySelector('video');
+                if(currVideo) { currVideo.pause(); }
+
+                currentSlideIndex++;
+                if(currentSlideIndex >= slides.length) {
+                    currentSlideIndex = 0;
+                    if(!cycledOnce) {
+                        cycledOnce = true;
+                        const endText = document.getElementById('s5-end-text');
+                        endText.style.opacity = '1';
+                        endText.style.transform = 'translateY(0)';
+                    }
+                }
+
+                slides[currentSlideIndex].classList.add('active');
+                playSlide(slides[currentSlideIndex]);
+            }
+        }
+
+        // --- TYPEWRITER LOGIC (SECTION 7) ---
+        let typewriterStarted = false;
+        let charIndex = 0;
+        const speed = 45; // ms per char
+        const letterText = `Tanu,
+
+Happy Friendship Day meri jaan ❤️
+
+Sach bolu na, mujhe bade bade emotional letters likhna nahi aata. Isliye jo bhi likh raha hu, dil se likh raha hu.
+
+Sabse pehle, thank you. Bas meri life me hone ke liye.
+
+Tu meri best friend hai, aur haan, meri personal designer bhi (bhle hi mai bolta nahi hu, lekin aaj tujhe bol hi diya FASHION DESIGNER). Jab bhi mujhe kisi outfit ya shopping pe opinion chahiye hota hai, pehla naam tera hi aata hai.
+
+Ek confession:
+Mujhe humari first fight yaad hi nahi hai. Shayad isliye kyunki wo kabhi important thi hi nahi. Wese bhi zyadatar ladai to mai hi start karta hu. Sorry uske liye, aur thank you ki tu har baar mujhe jhel leti hai.
+
+Mujhe humari friendship ki sabse achi baat ye lagti hai ki hum dono ko ek dusre ke saamne kabhi kuch pretend nahi karna padta. Jo mann me hota hai wahi bol dete hain. Kabhi hasi, kabhi bakchodi, kabhi arguments, aur phir sab normal.
+
+Bas ek baat hamesha yaad rakhna meri jaan:
+Life me kuch bhi ho, kitna bhi time nikal jaye, kitne bhi naye log aa jaye, main hamesha tere saath rahunga. Agar kabhi tujhe kisi ki zarurat ho, ya bas bina kisi reason ke baat karni ho, ek message ya call kar dena. Main hamesha rahunga.
+
+Tu hamesha khush reh, haste reh, aur apne sapne poore karti reh. Mujhe hamesha tujh par proud rahega.
+
+Thank you har memory ke liye, har hasi ke liye, aur meri bakwaas sunne ke liye.
+
+Happy Friendship Day.
+– Sagar`;
+
+        function typeWriter() {
+            const letterElement = document.getElementById('letter-content');
+            if (charIndex < letterText.length) {
+                letterElement.textContent += letterText.charAt(charIndex);
+                charIndex++;
+                
+                // Add tiny variations to typing speed for realistic feel
+                let currentSpeed = speed;
+                if(letterText.charAt(charIndex-1) === '.' || letterText.charAt(charIndex-1) === ',') {
+                    currentSpeed += 200; // Pause at punctuation
+                } else if (letterText.charAt(charIndex-1) === '\n') {
+                    currentSpeed += 400; // Longer pause at new lines
+                }
+                
+                setTimeout(typeWriter, currentSpeed);
+            }
+        }
+
+        // --- CONFETTI LOGIC ---
+        let confettiStarted = false;
+        function createConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#ff8fa3', '#ff4d6d', '#fff', '#ffd1dc', '#ffb8b8'];
+
+            for(let i=0; i<150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 6 + 3,
+                    dx: Math.random() * 4 - 2,
+                    dy: Math.random() * 4 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.floor(Math.random() * 10) - 10,
+                    tiltAngle: 0,
+                    tiltAngleInc: (Math.random() * 0.07) + 0.05
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0,0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.tiltAngle += p.tiltAngleInc;
+                    p.y += p.dy;
+                    p.x += Math.sin(p.tiltAngle) * 2;
+                    
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r);
+                    ctx.stroke();
+
+                    if(p.y > canvas.height) {
+                        p.y = -20;
+                        p.x = Math.random() * canvas.width;
+                    }
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+    </script>
+</body>
+</html>
